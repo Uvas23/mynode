@@ -10,7 +10,7 @@ clear
 echo "Step 1: "
 echo "  Install your a Debian Image:"
 echo "  Setup image for use with myNode:"
-echo "    See manual instructions in setup/setup_base_image_debian.txt"
+echo "    See manual instructions in doc/setup_base_image_debian.md"
 echo ""
 echo "Press a key when complete..."
 read -n 1
@@ -28,7 +28,7 @@ echo "  Login to device with username 'admin' and password 'bolt'"
 echo "  Run the following commands. Use bolt at password prompts."
 echo "    wget http://${LOCAL_IP}:8000/setup_device.sh -O setup_device.sh"
 echo "    chmod +x setup_device.sh"
-echo "    sudo ./setup_device.sh ${LOCAL_IP}"
+echo "    tmux new-session -s mynode sudo ./setup_device.sh ${LOCAL_IP}"
 echo ""
 echo "Press a key when complete..."
 read -n 1

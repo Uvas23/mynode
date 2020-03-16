@@ -18,6 +18,11 @@ cp -f /usr/share/quicksync/settings.json $QUICKSYNC_CONFIG_DIR/settings.json
 # Wait a bit for boot to complete
 sleep 15s
 
+# If marked as uploader, make sure QuickSync is enabled
+if [ -f $UPLOADER_FILE ]; then
+    rm /mnt/hdd/mynode/settings/quicksync_disabled || true
+fi
+
 # Check if quicksync was disabled
 while [ -f /mnt/hdd/mynode/settings/quicksync_disabled ]; do
     # Pretend quicksync step is complete
@@ -68,8 +73,8 @@ fi
 if [ ! -f $QUICKSYNC_DIR/blockchain.torrent ]; then
     cp $QUICKSYNC_DIR/blockchain_temp.torrent $QUICKSYNC_DIR/blockchain.torrent
 else
-    if [ $IS_RASPI3 -eq 1 ] && [ ! -f $UPLOADER_FILE ]; then
-        # Don't help with uploads during normal operation.... too slow
+    if [ ! -f $UPLOADER_FILE ]; then
+        # Don't update torrent for normal operations.... too slow
         sleep 1s
     else
         # Run commands as long as torrents are different (last command updates torrent file)

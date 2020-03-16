@@ -67,7 +67,7 @@ pip3 install lndmanage==0.9.0 --no-cache-dir   # Install LND Manage (keep up to 
 pip3 install docker-compose --no-cache-dir
 
 
-# Install docker
+# Install Docker
 if [ ! -f /usr/bin/docker ]; then
     rm -f /tmp/docker_install.sh
     wget https://get.docker.com -O /tmp/docker_install.sh
@@ -75,7 +75,7 @@ if [ ! -f /usr/bin/docker ]; then
     /bin/bash /tmp/docker_install.sh
 fi
 
-# Use systemd for managing docker
+# Use systemd for managing Docker
 rm -f /etc/init.d/docker
 rm -f /etc/systemd/system/multi-user.target.wants/docker.service
 systemctl -f enable docker.service
@@ -91,7 +91,7 @@ usermod -aG docker root
 
 # Upgrade BTC
 echo "Upgrading BTC..."
-BTC_VERSION="0.19.0.1"
+BTC_VERSION="0.19.1"
 ARCH="UNKNOWN"
 if [ $IS_RASPI = 1 ]; then
     ARCH="arm-linux-gnueabihf"
@@ -140,7 +140,7 @@ fi
 
 # Upgrade LND
 echo "Upgrading LND..."
-LND_VERSION="v0.9.0-beta"
+LND_VERSION="v0.9.2-beta"
 LND_ARCH="lnd-linux-armv7"
 if [ $IS_X86 = 1 ]; then
     LND_ARCH="lnd-linux-amd64"
@@ -177,9 +177,9 @@ if [ "$CURRENT" != "$LND_UPGRADE_URL" ]; then
     fi
 fi
 
-# Upgrade Loopd
+# Upgrade Loop
 echo "Upgrading loopd..."
-LOOP_VERSION="v0.4.0-beta"
+LOOP_VERSION="v0.5.0-beta"
 LOOP_ARCH="loop-linux-armv7"
 if [ $IS_X86 = 1 ]; then
     LOOP_ARCH="loop-linux-amd64"
@@ -257,7 +257,7 @@ if [ ! -f /usr/include/secp256k1_ecdh.h ]; then
     cp -f include/* /usr/include/
 fi
 
-# Upgrade Joinmarket
+# Upgrade JoinMarket
 echo "Upgrading JoinMarket..."
 if [ $IS_PREMIUM -eq 1 ]; then
     JOINMARKET_VERSION=0.6.1
@@ -281,7 +281,7 @@ if [ $IS_PREMIUM -eq 1 ]; then
         git fetch --tags --all
         git reset --hard v$JOINMARKET_VERSION
 
-        # Create virtualenv and setup joinmarket
+        # Create virtualenv and setup JoinMarket
         virtualenv -p python3 jmvenv
         source jmvenv/bin/activate
         python setupall.py --daemon
@@ -307,6 +307,7 @@ if [ "$CURRENT" != "$WHIRLPOOL_UPGRADE_URL" ]; then
     
     echo $WHIRLPOOL_UPGRADE_URL > $WHIRLPOOL_UPGRADE_URL_FILE
 fi
+
 
 # Upgrade RTL
 RTL_VERSION="v0.6.7"
@@ -342,7 +343,7 @@ if [ "$CURRENT" != "$RTL_UPGRADE_URL" ]; then
 fi
 
 # Upgrade Bitcoin RPC Explorer
-BTCRPCEXPLORER_UPGRADE_URL=https://github.com/janoside/btc-rpc-explorer/archive/v1.1.8.tar.gz
+BTCRPCEXPLORER_UPGRADE_URL=https://github.com/janoside/btc-rpc-explorer/archive/v1.1.9.tar.gz
 BTCRPCEXPLORER_UPGRADE_URL_FILE=/home/bitcoin/.mynode/.btcrpcexplorer_url
 CURRENT=""
 if [ -f $BTCRPCEXPLORER_UPGRADE_URL_FILE ]; then
@@ -452,9 +453,9 @@ systemctl enable loopd
 systemctl enable rotate_logs
 
 # Disable any old services
-systemctl disable hitch
-systemctl disable mongodb
-systemctl disable lnd_admin
+systemctl disable hitch || true
+systemctl disable mongodb || true
+systemctl disable lnd_admin || true
 systemctl disable dhcpcd || true
 
 # Reload service settings
